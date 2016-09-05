@@ -16,7 +16,6 @@ import de.blau.android.resources.Profile.FeatureProfile;
 import de.blau.android.util.GeoMath;
 
 public class Way extends OsmElement {
-
 	/**
 	 * 
 	 */
@@ -229,8 +228,6 @@ public class Way extends OsmElement {
 		}
 	}
 	
-
-	
 	/**
 	 * Reverses the direction of the way
 	 */
@@ -247,6 +244,15 @@ public class Way extends OsmElement {
 		int idx;
 		while ((idx = nodes.indexOf(existing)) != -1) {
 			nodes.set(idx, newNode);
+			// check for duplicates
+			if (idx > 0 && nodes.get(idx-1).equals(newNode)) {
+				Log.i("Way", "replaceNode node would duplicate preceeding node");
+				nodes.remove(idx);
+			}
+			if (idx >= 0 &&  idx < nodes.size()-1 && nodes.get(idx+1).equals(newNode)) {
+				Log.i("Way", "replaceNode node would duplicate following node");
+				nodes.remove(idx);
+			}
 		}
 	}
 
